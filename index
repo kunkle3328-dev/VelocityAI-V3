@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelocityAI v3.0 - AI Sales Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="logo"><i class="fas fa-rocket"></i> VelocityAI <span style="font-size: 0.7rem; color: var(--secondary);">v3.0</span></div>
+        <ul class="nav-links">
+            <li><a onclick="showSection('dashboard')">Dashboard</a></li>
+            <li><a onclick="showSection('leads')">Leads</a></li>
+            <li><a onclick="showSection('email')">Email Gen</a></li>
+            <li><a onclick="showSection('linkedin')">LinkedIn</a></li>
+            <li><a onclick="showSection('call-coach')">Call Coach</a></li>
+            <li><a onclick="showSection('chatbot')">AI Assistant</a></li>
+            <li><a onclick="showSection('forecast')">Forecasting</a></li>
+            <li><a onclick="showSection('settings')">Settings</a></li>
+        </ul>
+        <div id="hamburger-icon" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div id="menu-overlay" onclick="closeMobileMenu()"></div>
+    <div id="mobile-menu" class="mobile-menu">
+        <a onclick="showSection('dashboard'); closeMobileMenu();">Dashboard</a>
+        <a onclick="showSection('leads'); closeMobileMenu();">Lead Enrichment</a>
+        <a onclick="showSection('email'); closeMobileMenu();">Email Generator</a>
+        <a onclick="showSection('linkedin'); closeMobileMenu();">LinkedIn Agent</a>
+        <a onclick="showSection('call-coach'); closeMobileMenu();">Call Coach</a>
+        <a onclick="showSection('chatbot'); closeMobileMenu();">🆕 AI Assistant</a>
+        <a onclick="showSection('forecast'); closeMobileMenu();">🆕 Forecasting</a>
+        <a onclick="showSection('settings'); closeMobileMenu();">Settings</a>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-item active" onclick="showSection('dashboard')">
+            <i class="fas fa-chart-line"></i> Dashboard
+        </div>
+        <div class="sidebar-item" onclick="showSection('leads')">
+            <i class="fas fa-users"></i> Lead Enrichment
+        </div>
+        <div class="sidebar-item" onclick="showSection('email')">
+            <i class="fas fa-envelope"></i> Email Generator
+        </div>
+        <div class="sidebar-item" onclick="showSection('linkedin')">
+            <i class="fab fa-linkedin"></i> LinkedIn Agent
+        </div>
+        <div class="sidebar-item" onclick="showSection('call-coach')">
+            <i class="fas fa-phone"></i> Call Coach
+        </div>
+        <div class="sidebar-item new-feature" onclick="showSection('chatbot')">
+            <i class="fas fa-robot"></i> AI Assistant <span class="badge">NEW</span>
+        </div>
+        <div class="sidebar-item new-feature" onclick="showSection('forecast')">
+            <i class="fas fa-chart-area"></i> Forecasting <span class="badge">NEW</span>
+        </div>
+        <div class="sidebar-item" onclick="showSection('settings')">
+            <i class="fas fa-cog"></i> Settings
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <div class="metric-card">
+                <i class="fas fa-users metric-icon"></i>
+                <h3>Total Leads</h3>
+                <div class="metric-value">1,247</div>
+                <p class="metric-change positive">+12% this month</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-percentage metric-icon"></i>
+                <h3>Conversion Rate</h3>
+                <div class="metric-value">12.4%</div>
+                <p class="metric-change positive">+2.1% this month</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-dollar-sign metric-icon"></i>
+                <h3>Revenue</h3>
+                <div class="metric-value">$24.7K</div>
+                <p class="metric-change positive">+18% this month</p>
+            </div>
+            <div class="metric-card">
+                <i class="fas fa-rocket metric-icon"></i>
+                <h3>Active Sequences</h3>
+                <div class="metric-value">23</div>
+                <p class="metric-change positive">+5 new</p>
+            </div>
+        </div>
+
+        <!-- Lead Enrichment Section -->
+        <div id="leads" class="section">
+            <div class="card">
+                <h3><i class="fas fa-user-plus"></i> Add Lead</h3>
+                <p>Add a new lead to your database. VelocityAI will automatically enrich their information with verified contact details, company data, and social profiles.</p>
+                <label for="lead-name">Lead Name:</label>
+                <input type="text" id="lead-name" class="form-control" placeholder="e.g., John Smith">
+                <label for="lead-company">Company:</label>
+                <input type="text" id="lead-company" class="form-control" placeholder="e.g., TechCorp Inc">
+                <button class="btn" onclick="enrichLead()">Enrich Lead</button>
+                <div id="lead-result"></div>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-database"></i> Recent Leads</h3>
+                <div class="lead-list">
+                    <div class="lead-item">
+                        <div class="lead-avatar">SJ</div>
+                        <div class="lead-info">
+                            <strong>Sarah Johnson</strong>
+                            <span>VP Sales - TechCorp Solutions</span>
+                        </div>
+                        <div class="lead-score">94</div>
+                    </div>
+                    <div class="lead-item">
+                        <div class="lead-avatar">MC</div>
+                        <div class="lead-info">
+                            <strong>Michael Chen</strong>
+                            <span>CTO - Innovate.io</span>
+                        </div>
+                        <div class="lead-score">87</div>
+                    </div>
+                    <div class="lead-item">
+                        <div class="lead-avatar">ER</div>
+                        <div class="lead-info">
+                            <strong>Emily Rodriguez</strong>
+                            <span>Director - Acme Corp</span>
+                        </div>
+                        <div class="lead-score">91</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Generator Section -->
+        <div id="email" class="section">
+            <div class="card">
+                <h3><i class="fas fa-magic"></i> AI Email Generator</h3>
+                <p>Create personalized sales emails powered by AI. Select a prospect and describe your product to generate multiple compelling email variations.</p>
+                <label for="email-lead">Select Lead:</label>
+                <select id="email-lead" class="form-control">
+                    <option value="">Choose a lead...</option>
+                    <option value="sarah">Sarah Johnson - VP Sales at TechCorp Solutions</option>
+                    <option value="michael">Michael Chen - CTO at Innovate.io</option>
+                    <option value="emily">Emily Rodriguez - Director at Acme Corp</option>
+                </select>
+                <label for="email-product">Describe Your Product:</label>
+                <textarea id="email-product" class="form-control" placeholder="E.g., AI-powered sales automation platform that increases deal velocity by 3x..."></textarea>
+                <button class="btn" onclick="generateEmails()"><i class="fas fa-paper-plane"></i> Generate Emails</button>
+                <div id="email-results"></div>
+            </div>
+        </div>
+
+        <!-- LinkedIn Agent Section -->
+        <div id="linkedin" class="section">
+            <div class="card">
+                <h3><i class="fab fa-linkedin"></i> AI LinkedIn Outreach Agent</h3>
+                <p>Automate your LinkedIn prospecting. The AI finds prospects matching your ICP and sends personalized connection requests and follow-ups 24/7.</p>
+                <div class="stats-row">
+                    <div class="stat">
+                        <span class="stat-value">237</span>
+                        <span class="stat-label">Connections Sent</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">45</span>
+                        <span class="stat-label">Responses</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">12</span>
+                        <span class="stat-label">Meetings Booked</span>
+                    </div>
+                </div>
+                <button class="btn" onclick="showToast('LinkedIn Agent launched! Now prospecting 24/7')"><i class="fas fa-play"></i> Launch Agent</button>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-chart-bar"></i> Campaign Performance</h3>
+                <p>Track your LinkedIn outreach campaigns in real-time.</p>
+                <div class="progress-item">
+                    <span>Connection Rate</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 68%;">68%</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span>Response Rate</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 19%;">19%</div>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <span>Meeting Rate</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 5%;">5%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call Coach Section -->
+        <div id="call-coach" class="section">
+            <div class="card">
+                <h3><i class="fas fa-phone"></i> Real-Time Sales Call Coach</h3>
+                <p>Get AI assistance during sales calls. Live transcription, objection handling, battle cards, and sentiment analysis—all in real-time.</p>
+                <div class="call-status">
+                    <i class="fas fa-circle" style="color: #00ff88;"></i> Ready to join calls
+                </div>
+                <button class="btn" onclick="startCallCoach()"><i class="fas fa-headset"></i> Enable Call Coach</button>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-history"></i> Recent Calls</h3>
+                <div class="call-list">
+                    <div class="call-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="call-details">
+                            <strong>Sarah Johnson - TechCorp</strong>
+                            <span>45 min • Positive sentiment • Follow-up needed</span>
+                        </div>
+                    </div>
+                    <div class="call-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="call-details">
+                            <strong>Michael Chen - Innovate.io</strong>
+                            <span>32 min • Very positive • Demo scheduled</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: AI Chatbot Assistant Section -->
+        <div id="chatbot" class="section">
+            <div class="card full-width">
+                <h3><i class="fas fa-robot"></i> AI Sales Assistant Chatbot <span class="badge">NEW in v3.0</span></h3>
+                <p>Ask questions, get product recommendations, handle objections, and get real-time insights from your AI assistant.</p>
+                <div class="chatbot-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="chat-message bot">
+                            <div class="message-avatar bot-avatar"><i class="fas fa-robot"></i></div>
+                            <div class="message-content">
+                                <strong>VelocityAI Assistant</strong>
+                                <p>Hi! I'm your AI sales assistant. I can help you with lead insights, email suggestions, objection handling, and more. How can I assist you today?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chat-input" class="form-control" placeholder="Ask me anything about your sales pipeline..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                        <button class="btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Predictive Forecasting Section -->
+        <div id="forecast" class="section">
+            <div class="card full-width">
+                <h3><i class="fas fa-chart-area"></i> Predictive Pipeline Forecasting <span class="badge">NEW in v3.0</span></h3>
+                <p>ML-powered revenue forecasting predicts close dates and deal values with 92% accuracy.</p>
+                <div class="forecast-summary">
+                    <div class="forecast-metric">
+                        <span class="forecast-label">This Month Forecast</span>
+                        <span class="forecast-value">$127,400</span>
+                        <span class="forecast-confidence">92% confidence</span>
+                    </div>
+                    <div class="forecast-metric">
+                        <span class="forecast-label">Next Month Forecast</span>
+                        <span class="forecast-value">$156,800</span>
+                        <span class="forecast-confidence">87% confidence</span>
+                    </div>
+                    <div class="forecast-metric">
+                        <span class="forecast-label">Q4 2025 Forecast</span>
+                        <span class="forecast-value">$468,200</span>
+                        <span class="forecast-confidence">85% confidence</span>
+                    </div>
+                </div>
+                <h4>Active Deals - AI Predictions</h4>
+                <div class="deals-table">
+                    <div class="deal-row">
+                        <div class="deal-info">
+                            <strong>TechCorp Solutions - Enterprise Plan</strong>
+                            <span>Sarah Johnson • $45,000</span>
+                        </div>
+                        <div class="deal-prediction">
+                            <span class="close-prob high">89% Close Prob</span>
+                            <span class="close-date">Est. Close: Nov 15, 2025</span>
+                        </div>
+                    </div>
+                    <div class="deal-row">
+                        <div class="deal-info">
+                            <strong>Innovate.io - Professional Plan</strong>
+                            <span>Michael Chen • $28,000</span>
+                        </div>
+                        <div class="deal-prediction">
+                            <span class="close-prob high">82% Close Prob</span>
+                            <span class="close-date">Est. Close: Nov 8, 2025</span>
+                        </div>
+                    </div>
+                    <div class="deal-row">
+                        <div class="deal-info">
+                            <strong>Acme Corp - Starter Plan</strong>
+                            <span>Emily Rodriguez • $12,000</span>
+                        </div>
+                        <div class="deal-prediction">
+                            <span class="close-prob medium">64% Close Prob</span>
+                            <span class="close-date">Est. Close: Nov 22, 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" onclick="showToast('Forecasting model updated with latest pipeline data!')"><i class="fas fa-sync"></i> Refresh Predictions</button>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings" class="section">
+            <div class="card">
+                <h3><i class="fas fa-user"></i> Account Settings</h3>
+                <p>Update your profile, preferences, and notification settings.</p>
+                <label>Full Name:</label>
+                <input type="text" class="form-control" value="Your Name" placeholder="Enter your name">
+                <label>Email:</label>
+                <input type="email" class="form-control" value="you@company.com" placeholder="Enter your email">
+                <button class="btn" onclick="showToast('Settings saved successfully!')">Save Changes</button>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-credit-card"></i> Billing</h3>
+                <p>Current Plan: <strong style="color: var(--primary);">Professional ($199/mo)</strong></p>
+                <p>Payment Method: <strong>Cash App ($edcmediadesigns)</strong></p>
+                <button class="btn" onclick="showToast('Redirecting to billing portal...')">Manage Subscription</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+</body>
+</html>
