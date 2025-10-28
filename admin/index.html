@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelocityAI - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #00d4ff;
+            --secondary: #00ff88;
+            --accent: #4169E1;
+            --dark-bg: #0a0e27;
+            --card-bg: #1a1f3a;
+            --text: #e0e6ff;
+            --error: #ff4444;
+        }
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a3e 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a3e 100%);
+        }
+        .login-card {
+            background: linear-gradient(135deg, rgba(26,31,58,0.9) 0%, rgba(65,105,225,0.1) 100%);
+            border: 2px solid rgba(0,212,255,0.3);
+            border-radius: 20px;
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(20px);
+        }
+        .login-card h1 { color: var(--primary); text-align: center; margin-bottom: 2rem; font-size: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: var(--primary); font-weight: 600; }
+        .form-group input {
+            width: 100%; padding: 12px; background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(0,212,255,0.3); border-radius: 8px;
+            color: var(--text); font-size: 1rem; transition: all 0.3s;
+        }
+        .form-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 20px rgba(0,212,255,0.3); }
+        .login-btn {
+            width: 100%; padding: 12px; background: linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
+            color: var(--dark-bg); border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.4); }
+        .error-message { color: var(--error); text-align: center; margin-bottom: 1rem; display: none; }
+        .admin-dashboard { display: none; }
+        .admin-dashboard.active { display: block; }
+        nav {
+            background: rgba(10,14,39,0.95);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(0,212,255,0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-shadow: 0 0 20px rgba(0,212,255,0.8); }
+        .logout-btn {
+            background: var(--error); color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s;
+        }
+        .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,68,68,0.3); }
+        .admin-container {
+            max-width: 1400px; margin: 0 auto; padding: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap: 2rem;
+        }
+        .metric-card {
+            background: linear-gradient(135deg,rgba(26,31,58,0.7) 0%,rgba(65,105,225,0.1) 100%);
+            border: 1px solid rgba(0,212,255,0.3); border-radius: 15px;
+            padding: 2rem; text-align: center;
+        }
+        .metric-value { font-size: 2.5rem; font-weight: bold; color: var(--primary); margin: 1rem 0; }
+        .metric-label { color: rgba(224,230,255,0.8); font-size: 0.9rem; }
+        .full-width { grid-column: 1 / -1; }
+        .chart-container {
+            background: linear-gradient(135deg,rgba(26,31,58,0.7) 0%,rgba(65,105,225,0.1) 100%);
+            border: 1px solid rgba(0,212,255,0.3); border-radius: 15px;
+            padding: 2rem; grid-column: 1 / -1;
+        }
+        .chart-container h3 { color: var(--primary); margin-bottom: 1.5rem; }
+        .users-table {
+            width: 100%; grid-column: 1 / -1;
+            background: linear-gradient(135deg,rgba(26,31,58,0.7) 0%,rgba(65,105,225,0.1) 100%);
+            border: 1px solid rgba(0,212,255,0.3); border-radius: 15px;
+            padding: 2rem;
+        }
+        .users-table h3 { color: var(--primary); margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; }
+        thead { border-bottom: 2px solid rgba(0,212,255,0.3); }
+        th, td { padding: 1rem; text-align: left; color: var(--text); }
+        th { color: var(--primary); font-weight: 600; }
+        tr:hover { background: rgba(0,212,255,0.1); }
+        .status-badge {
+            display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+        }
+        .status-active { background: rgba(0,255,136,0.2); color: var(--secondary); }
+        .status-inactive { background: rgba(255,68,68,0.2); color: var(--error); }
+        .action-btn {
+            background: transparent; color: var(--primary); border: 1px solid var(--primary);
+            padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;
+            transition: all 0.3s; margin-right: 5px;
+        }
+        .action-btn:hover { background: var(--primary); color: var(--dark-bg); }
+        @media (max-width: 768px) {
+            .admin-container { grid-template-columns: 1fr; }
+            .metric-value { font-size: 1.8rem; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-card">
+            <h1>🔐 VelocityAI Admin</h1>
+            <div class="error-message" id="error-message">Invalid credentials. Try again.</div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem; color: rgba(224,230,255,0.6);">Demo: admin / VelocityAI2025!</p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="admin-dashboard">
+        <nav>
+            <div class="admin-logo"><i class="fas fa-chart-line"></i> VelocityAI Admin</div>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </nav>
+
+        <div class="admin-container">
+            <div class="metric-card">
+                <i class="fas fa-users" style="font-size: 2rem; color: var(--primary);"></i>
+                <div class="metric-label">Total Users</div>
+                <div class="metric-value">1,247</div>
+                <p style="color: rgba(224,230,255,0.6); font-size: 0.8rem;">+12% this month</p>
+            </div>
+
+            <div class="metric-card">
+                <i class="fas fa-credit-card" style="font-size: 2rem; color: var(--secondary);"></i>
+                <div class="metric-label">Monthly Revenue</div>
+                <div class="metric-value">$24.7K</div>
+                <p style="color: rgba(224,230,255,0.6); font-size: 0.8rem;">+18% this month</p>
+            </div>
+
+            <div class="metric-card">
+                <i class="fas fa-check-circle" style="font-size: 2rem; color: var(--secondary);"></i>
+                <div class="metric-label">Active Subscriptions</div>
+                <div class="metric-value">423</div>
+                <p style="color: rgba(224,230,255,0.6); font-size: 0.8rem;">+8% this month</p>
+            </div>
+
+            <div class="metric-card">
+                <i class="fas fa-percentage" style="font-size: 2rem; color: var(--primary);"></i>
+                <div class="metric-label">Conversion Rate</div>
+                <div class="metric-value">12.4%</div>
+                <p style="color: rgba(224,230,255,0.6); font-size: 0.8rem;">+2.1% this month</p>
+            </div>
+
+            <div class="chart-container">
+                <h3>Revenue Trend (Last 30 Days)</h3>
+                <canvas id="revenue-chart" height="80"></canvas>
+            </div>
+
+            <div class="users-table">
+                <h3>Recent Users</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Plan</th>
+                            <th>Joined</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sarah Johnson</td>
+                            <td>sarah@techcorp.com</td>
+                            <td>Professional</td>
+                            <td>Oct 15, 2025</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <button class="action-btn" onclick="alert('Edit user')">Edit</button>
+                                <button class="action-btn" onclick="alert('View details')">Details</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Michael Chen</td>
+                            <td>michael@innovate.io</td>
+                            <td>Enterprise</td>
+                            <td>Oct 18, 2025</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <button class="action-btn" onclick="alert('Edit user')">Edit</button>
+                                <button class="action-btn" onclick="alert('View details')">Details</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Emily Rodriguez</td>
+                            <td>emily@acmecorp.com</td>
+                            <td>Starter</td>
+                            <td>Oct 20, 2025</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                            <td>
+                                <button class="action-btn" onclick="alert('Edit user')">Edit</button>
+                                <button class="action-btn" onclick="alert('View details')">Details</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'VelocityAI2025!';
+
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+            const loginTime = parseInt(localStorage.getItem('adminLoginTime') || '0');
+            const now = Date.now();
+            const sessionTimeout = 8 * 60 * 60 * 1000;
+
+            if (isLoggedIn && (now - loginTime) < sessionTimeout) {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-message');
+
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminLoginTime', Date.now());
+                showDashboard();
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            }
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminLoggedIn');
+                localStorage.removeItem('adminLoginTime');
+                showLogin();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('admin-dashboard').classList.remove('active');
+        }
+
+        function showDashboard() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-dashboard').classList.add('active');
+            initializeCharts();
+        }
+
+        function initializeCharts() {
+            const ctx = document.getElementById('revenue-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Day 1', 'Day 5', 'Day 10', 'Day 15', 'Day 20', 'Day 25', 'Day 30'],
+                    datasets: [{
+                        label: 'Daily Revenue',
+                        data: [800, 1200, 1500, 2000, 2100, 2300, 2750],
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#00ff88',
+                        pointBorderColor: '#00d4ff',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e0e6ff' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { color: '#e0e6ff' },
+                            grid: { color: 'rgba(0, 212, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#e0e6ff' },
+                            grid: { color: 'rgba(0, 212, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('error-message').style.display = 'none';
+            }
+        });
+
+        window.addEventListener('load', checkAuth);
+    </script>
+</body>
+</html>
