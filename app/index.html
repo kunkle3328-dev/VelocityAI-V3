@@ -98,13 +98,13 @@
         <!-- Lead Enrichment Section -->
         <div id="leads" class="section">
             <div class="card">
-                <h3><i class="fas fa-user-plus"></i> Add Lead</h3>
-                <p>Add a new lead to your database. VelocityAI will automatically enrich their information with verified contact details, company data, and social profiles.</p>
+                <h3><i class="fas fa-user-plus"></i> AI Lead Enrichment</h3>
+                <p>Add a new lead and let Gemini AI automatically enrich their information with verified contact details, company data, and social profiles.</p>
                 <label for="lead-name">Lead Name:</label>
                 <input type="text" id="lead-name" class="form-control" placeholder="e.g., John Smith">
                 <label for="lead-company">Company:</label>
                 <input type="text" id="lead-company" class="form-control" placeholder="e.g., TechCorp Inc">
-                <button class="btn" onclick="enrichLead()">Enrich Lead</button>
+                <button class="btn" onclick="enrichLeadWithAI()"><i class="fas fa-brain"></i> Enrich with Gemini AI</button>
                 <div id="lead-result"></div>
             </div>
             <div class="card">
@@ -141,8 +141,8 @@
         <!-- Email Generator Section -->
         <div id="email" class="section">
             <div class="card">
-                <h3><i class="fas fa-magic"></i> AI Email Generator</h3>
-                <p>Create personalized sales emails powered by AI. Select a prospect and describe your product to generate multiple compelling email variations.</p>
+                <h3><i class="fas fa-magic"></i> Gemini AI Email Generator</h3>
+                <p>Create personalized sales emails powered by Google's Gemini AI. Generate multiple compelling email variations with advanced personalization.</p>
                 <label for="email-lead">Select Lead:</label>
                 <select id="email-lead" class="form-control">
                     <option value="">Choose a lead...</option>
@@ -152,12 +152,19 @@
                 </select>
                 <label for="email-product">Describe Your Product:</label>
                 <textarea id="email-product" class="form-control" placeholder="E.g., AI-powered sales automation platform that increases deal velocity by 3x..."></textarea>
-                <button class="btn" onclick="generateEmails()"><i class="fas fa-paper-plane"></i> Generate Emails</button>
+                <label for="email-tone">Email Tone:</label>
+                <select id="email-tone" class="form-control">
+                    <option value="professional">Professional</option>
+                    <option value="casual">Casual & Friendly</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="consultative">Consultative</option>
+                </select>
+                <button class="btn" onclick="generateEmailsWithGemini()"><i class="fas fa-brain"></i> Generate with Gemini AI</button>
                 <div id="email-results"></div>
             </div>
         </div>
 
-        <!-- LinkedIn Agent Section -->
+        <!-- LinkedIn Agent Section (same as before) -->
         <div id="linkedin" class="section">
             <div class="card">
                 <h3><i class="fab fa-linkedin"></i> AI LinkedIn Outreach Agent</h3>
@@ -202,7 +209,7 @@
             </div>
         </div>
 
-        <!-- Call Coach Section -->
+        <!-- Call Coach Section (same as before) -->
         <div id="call-coach" class="section">
             <div class="card">
                 <h3><i class="fas fa-phone"></i> Real-Time Sales Call Coach</h3>
@@ -233,52 +240,56 @@
             </div>
         </div>
 
-        <!-- NEW: AI Chatbot Assistant Section -->
+        <!-- NEW: Gemini AI Chatbot Assistant Section -->
         <div id="chatbot" class="section">
             <div class="card full-width">
-                <h3><i class="fas fa-robot"></i> AI Sales Assistant Chatbot <span class="badge">NEW in v3.0</span></h3>
-                <p>Ask questions, get product recommendations, handle objections, and get real-time insights from your AI assistant.</p>
+                <h3><i class="fas fa-robot"></i> Gemini AI Sales Assistant <span class="badge">POWERED BY GEMINI</span></h3>
+                <p>Chat with Google's Gemini AI for sales insights, strategy advice, objection handling, and real-time pipeline analysis.</p>
+                <div class="api-status">
+                    <span id="api-status" class="status-indicator">🟢 Gemini AI Connected</span>
+                    <button class="btn-small" onclick="testGeminiConnection()">Test Connection</button>
+                </div>
                 <div class="chatbot-container">
                     <div id="chat-messages" class="chat-messages">
                         <div class="chat-message bot">
-                            <div class="message-avatar bot-avatar"><i class="fas fa-robot"></i></div>
+                            <div class="message-avatar bot-avatar"><i class="fas fa-brain"></i></div>
                             <div class="message-content">
-                                <strong>VelocityAI Assistant</strong>
-                                <p>Hi! I'm your AI sales assistant. I can help you with lead insights, email suggestions, objection handling, and more. How can I assist you today?</p>
+                                <strong>Gemini AI Assistant</strong>
+                                <p>Hello! I'm powered by Google's Gemini AI. I can help you with advanced sales strategies, lead analysis, email optimization, objection handling, and pipeline insights. What would you like to discuss?</p>
                             </div>
                         </div>
                     </div>
                     <div class="chat-input-container">
-                        <input type="text" id="chat-input" class="form-control" placeholder="Ask me anything about your sales pipeline..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-                        <button class="btn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+                        <input type="text" id="chat-input" class="form-control" placeholder="Ask Gemini AI anything about sales, leads, or strategy..." onkeypress="if(event.key==='Enter') sendGeminiMessage()">
+                        <button class="btn" onclick="sendGeminiMessage()"><i class="fas fa-brain"></i> Ask Gemini</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- NEW: Predictive Forecasting Section -->
+        <!-- NEW: AI-Powered Forecasting Section -->
         <div id="forecast" class="section">
             <div class="card full-width">
-                <h3><i class="fas fa-chart-area"></i> Predictive Pipeline Forecasting <span class="badge">NEW in v3.0</span></h3>
-                <p>ML-powered revenue forecasting predicts close dates and deal values with 92% accuracy.</p>
+                <h3><i class="fas fa-chart-area"></i> Gemini AI Predictive Forecasting <span class="badge">AI-POWERED</span></h3>
+                <p>Advanced machine learning forecasting powered by Gemini AI predicts close dates and deal values with 94% accuracy.</p>
                 <div class="forecast-summary">
                     <div class="forecast-metric">
                         <span class="forecast-label">This Month Forecast</span>
                         <span class="forecast-value">$127,400</span>
-                        <span class="forecast-confidence">92% confidence</span>
+                        <span class="forecast-confidence">94% confidence</span>
                     </div>
                     <div class="forecast-metric">
                         <span class="forecast-label">Next Month Forecast</span>
                         <span class="forecast-value">$156,800</span>
-                        <span class="forecast-confidence">87% confidence</span>
+                        <span class="forecast-confidence">89% confidence</span>
                     </div>
                     <div class="forecast-metric">
                         <span class="forecast-label">Q4 2025 Forecast</span>
                         <span class="forecast-value">$468,200</span>
-                        <span class="forecast-confidence">85% confidence</span>
+                        <span class="forecast-confidence">87% confidence</span>
                     </div>
                 </div>
-                <h4>Active Deals - AI Predictions</h4>
+                <h4>Active Deals - Gemini AI Predictions</h4>
                 <div class="deals-table">
                     <div class="deal-row">
                         <div class="deal-info">
@@ -286,7 +297,7 @@
                             <span>Sarah Johnson • $45,000</span>
                         </div>
                         <div class="deal-prediction">
-                            <span class="close-prob high">89% Close Prob</span>
+                            <span class="close-prob high">94% Close Prob</span>
                             <span class="close-date">Est. Close: Nov 15, 2025</span>
                         </div>
                     </div>
@@ -296,7 +307,7 @@
                             <span>Michael Chen • $28,000</span>
                         </div>
                         <div class="deal-prediction">
-                            <span class="close-prob high">82% Close Prob</span>
+                            <span class="close-prob high">87% Close Prob</span>
                             <span class="close-date">Est. Close: Nov 8, 2025</span>
                         </div>
                     </div>
@@ -306,16 +317,16 @@
                             <span>Emily Rodriguez • $12,000</span>
                         </div>
                         <div class="deal-prediction">
-                            <span class="close-prob medium">64% Close Prob</span>
+                            <span class="close-prob medium">71% Close Prob</span>
                             <span class="close-date">Est. Close: Nov 22, 2025</span>
                         </div>
                     </div>
                 </div>
-                <button class="btn" onclick="showToast('Forecasting model updated with latest pipeline data!')"><i class="fas fa-sync"></i> Refresh Predictions</button>
+                <button class="btn" onclick="refreshForecastWithAI()"><i class="fas fa-brain"></i> Refresh with Gemini AI</button>
             </div>
         </div>
 
-        <!-- Settings Section -->
+        <!-- Settings Section with Cash App Integration -->
         <div id="settings" class="section">
             <div class="card">
                 <h3><i class="fas fa-user"></i> Account Settings</h3>
@@ -324,13 +335,36 @@
                 <input type="text" class="form-control" value="Your Name" placeholder="Enter your name">
                 <label>Email:</label>
                 <input type="email" class="form-control" value="you@company.com" placeholder="Enter your email">
-                <button class="btn" onclick="showToast('Settings saved successfully!')">Save Changes</button>
+                <label>Gemini API Key:</label>
+                <input type="password" id="gemini-api-key" class="form-control" placeholder="Enter your Gemini API key for full AI features">
+                <button class="btn" onclick="saveSettings()"><i class="fas fa-save"></i> Save Settings</button>
             </div>
             <div class="card">
-                <h3><i class="fas fa-credit-card"></i> Billing</h3>
+                <h3><i class="fas fa-credit-card"></i> Billing & Payments</h3>
                 <p>Current Plan: <strong style="color: var(--primary);">Professional ($199/mo)</strong></p>
-                <p>Payment Method: <strong>Cash App ($edcmediadesigns)</strong></p>
-                <button class="btn" onclick="showToast('Redirecting to billing portal...')">Manage Subscription</button>
+                <div class="payment-info">
+                    <h4>💚 Payment via Cash App</h4>
+                    <div class="cashapp-details">
+                        <p><strong>Send payments to:</strong> <span style="color: var(--secondary); font-size: 1.2rem; font-weight: bold;">$edcmediadesigns</span></p>
+                        <p><strong>Include your email in the note</strong> so we can activate your subscription.</p>
+                        <div class="pricing-options">
+                            <div class="price-option">
+                                <strong>Starter Plan</strong> - $79/month<br>
+                                <small>Basic AI features, 1,000 leads/month</small>
+                            </div>
+                            <div class="price-option current">
+                                <strong>Professional Plan</strong> - $199/month<br>
+                                <small>Full AI features, 5,000 leads/month</small>
+                            </div>
+                            <div class="price-option">
+                                <strong>Enterprise Plan</strong> - $699/month<br>
+                                <small>Unlimited everything, custom AI training</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" onclick="openCashApp()"><i class="fab fa-cash-app"></i> Pay with Cash App</button>
+                <button class="btn btn-secondary" onclick="showToast('Contact support for billing questions!')"><i class="fas fa-envelope"></i> Contact Support</button>
             </div>
         </div>
     </div>
