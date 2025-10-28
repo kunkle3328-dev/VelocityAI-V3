@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VelocityAI - AI Sales Automation Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #00d4ff;
+            --secondary: #00ff88;
+            --accent: #4169E1;
+            --dark-bg: #0a0e27;
+            --card-bg: #1a1f3a;
+            --text: #e0e6ff;
+        }
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a3e 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        nav {
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); text-shadow: 0 0 20px rgba(0, 212, 255, 0.8); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text); text-decoration: none; transition: all 0.3s; cursor: pointer; }
+        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 10px rgba(0, 212, 255, 0.6); }
+        .cta-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--dark-bg); border: none; padding: 10px 20px; border-radius: 8px;
+            cursor: pointer; font-weight: 600; transition: all 0.3s;
+        }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4); }
+        .hero {
+            max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; text-align: center;
+        }
+        .hero h1 {
+            font-size: 3.5rem; margin-bottom: 1rem; color: var(--primary);
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.2rem; margin-bottom: 2rem; color: rgba(224, 230, 255, 0.9);
+            max-width: 700px; margin-left: auto; margin-right: auto;
+        }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--dark-bg); border: none; padding: 15px 40px; border-radius: 10px;
+            cursor: pointer; font-weight: 600; font-size: 1rem; transition: all 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4); }
+        .btn-secondary {
+            background: transparent; color: var(--primary); border: 2px solid var(--primary);
+            padding: 13px 38px; border-radius: 10px; cursor: pointer; font-weight: 600;
+            font-size: 1rem; transition: all 0.3s;
+        }
+        .btn-secondary:hover { background: rgba(0, 212, 255, 0.1); }
+        .video-modal {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 2000;
+            align-items: center; justify-content: center;
+        }
+        .video-modal.active { display: flex; }
+        .video-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1999; }
+        .video-content {
+            position: relative; z-index: 2001; width: 90%; max-width: 800px;
+            background: rgba(26, 31, 58, 0.9); border-radius: 20px; overflow: hidden;
+        }
+        .video-close {
+            position: absolute; top: 10px; right: 10px; background: transparent;
+            color: var(--primary); border: none; font-size: 2rem; cursor: pointer;
+            z-index: 2002; transition: all 0.3s;
+        }
+        .video-close:hover { color: var(--secondary); }
+        .video-wrapper { width: 100%; padding-top: 56.25%; position: relative; background: #000; }
+        .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .features {
+            max-width: 1200px; margin: 4rem auto; padding: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.7) 0%, rgba(65, 105, 225, 0.1) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 15px;
+            padding: 2rem; text-align: center; transition: all 0.3s;
+        }
+        .feature-card:hover {
+            border-color: var(--primary); transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.2);
+        }
+        .feature-icon { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+        .feature-card h3 { color: var(--primary); margin-bottom: 0.5rem; }
+        .feature-card p { color: rgba(224, 230, 255, 0.8); font-size: 0.9rem; }
+        .pricing {
+            max-width: 1200px; margin: 4rem auto; padding: 2rem;
+        }
+        .pricing h2 {
+            text-align: center; font-size: 2.5rem; color: var(--primary); margin-bottom: 3rem;
+        }
+        .pricing-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+        }
+        .pricing-card {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.7) 0%, rgba(65, 105, 225, 0.1) 100%);
+            border: 2px solid rgba(0, 212, 255, 0.3); border-radius: 15px;
+            padding: 2rem; text-align: center; transition: all 0.3s; position: relative;
+        }
+        .pricing-card:hover {
+            border-color: var(--primary); transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+        }
+        .pricing-card.popular {
+            transform: scale(1.05); border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
+        }
+        .popular-badge {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--dark-bg); padding: 5px 15px; border-radius: 20px;
+            font-weight: 600; font-size: 0.8rem;
+        }
+        .pricing-card h3 { color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem; }
+        .price { font-size: 2.5rem; color: var(--secondary); margin-bottom: 0.5rem; }
+        .price-period { color: rgba(224, 230, 255, 0.6); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .features-list { text-align: left; margin: 1.5rem 0; font-size: 0.9rem; }
+        .features-list li {
+            padding: 0.5rem 0; color: rgba(224, 230, 255, 0.8); list-style: none;
+        }
+        .features-list li:before {
+            content: "✓ "; color: var(--secondary); font-weight: bold; margin-right: 0.5rem;
+        }
+        .testimonials {
+            max-width: 1200px; margin: 4rem auto; padding: 2rem;
+        }
+        .testimonials h2 {
+            text-align: center; font-size: 2.5rem; color: var(--primary); margin-bottom: 3rem;
+        }
+        .testimonial-cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+        }
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(26, 31, 58, 0.7) 0%, rgba(65, 105, 225, 0.1) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 15px; padding: 2rem;
+        }
+        .stars { color: var(--secondary); margin-bottom: 1rem; }
+        .testimonial-text {
+            color: rgba(224, 230, 255, 0.9); margin-bottom: 1rem; font-style: italic;
+        }
+        .testimonial-author { color: var(--primary); font-weight: 600; }
+        footer {
+            background: rgba(26, 31, 58, 0.8); border-top: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 2rem; text-align: center; color: rgba(224, 230, 255, 0.8);
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2rem; }
+            .hero-buttons { flex-direction: column; }
+            .pricing-card.popular { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo"><i class="fas fa-rocket"></i> VelocityAI</div>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><button class="cta-btn" onclick="alert('Sign up coming soon!')">Sign Up</button></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>🚀 Close 3x More Deals with AI-Powered Sales Automation</h1>
+        <p>VelocityAI gives sales teams superhuman powers. Automate prospecting, coaching, and follow-ups while you focus on closing.</p>
+        <div class="hero-buttons">
+            <button class="btn-primary" onclick="alert('Start your free trial!')">Start Free 14-Day Trial</button>
+            <button class="btn-secondary" onclick="openVideo()">
+                <i class="fas fa-play-circle"></i> Watch 2-Minute Demo
+            </button>
+        </div>
+        <p style="margin-top: 2rem; font-size: 0.95rem; color: rgba(224, 230, 255, 0.6);">Join 10,000+ sales teams using VelocityAI</p>
+    </section>
+
+    <div id="video-modal" class="video-modal">
+        <div class="video-overlay" onclick="closeVideo()"></div>
+        <div class="video-content">
+            <button class="video-close" onclick="closeVideo()"><i class="fas fa-times"></i></button>
+            <div class="video-wrapper">
+                <video id="demo-video" controls preload="metadata">
+                    <source src="https://user-gen-media-assets.s3.amazonaws.com/veo_videos/ce60555d-dbc2-4260-8173-05a9a6e8cdde.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <section id="features" class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🔥</div>
+            <h3>AI LinkedIn Outreach</h3>
+            <p>Autonomous agent finds prospects on LinkedIn and sends personalized outreach 24/7</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎤</div>
+            <h3>Real-Time Call Coach</h3>
+            <p>Live transcription, objection handling, and battle cards during every sales call</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>Multi-Channel Orchestration</h3>
+            <p>Coordinate outreach across email, LinkedIn, SMS, and phone in one campaign</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Predictive Lead Scoring 2.0</h3>
+            <p>AI analyzes 50+ signals to identify buy-ready leads with 95% accuracy</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">✉️</div>
+            <h3>AI Email Generator</h3>
+            <p>Create 3 personalized email variations in seconds using AI</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">📈</div>
+            <h3>Advanced Analytics</h3>
+            <p>Real-time dashboards track pipeline, revenue, and team performance</p>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <h2>Simple, Transparent Pricing</h2>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <h3>Starter</h3>
+                <div class="price">$79</div>
+                <div class="price-period">/month • Billed monthly</div>
+                <ul class="features-list">
+                    <li>Lead Enrichment</li>
+                    <li>AI Email Generator</li>
+                    <li>Basic Lead Scoring</li>
+                    <li>1 User</li>
+                    <li>1,000 Monthly Leads</li>
+                </ul>
+                <button class="btn-primary" onclick="alert('Choose Starter plan')">Get Started</button>
+            </div>
+
+            <div class="pricing-card popular">
+                <div class="popular-badge">MOST POPULAR</div>
+                <h3>Professional</h3>
+                <div class="price">$199</div>
+                <div class="price-period">/month • Billed monthly</div>
+                <ul class="features-list">
+                    <li>Everything in Starter</li>
+                    <li>AI LinkedIn Outreach</li>
+                    <li>Real-Time Call Coach</li>
+                    <li>Multi-Channel Campaigns</li>
+                    <li>5 Users</li>
+                    <li>5,000 Monthly Leads</li>
+                </ul>
+                <button class="btn-primary" onclick="alert('Choose Professional plan')">Get Started</button>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Enterprise</h3>
+                <div class="price">$699</div>
+                <div class="price-period">/month • Billed monthly</div>
+                <ul class="features-list">
+                    <li>Everything in Professional</li>
+                    <li>AI Deal Coach</li>
+                    <li>Unlimited Users</li>
+                    <li>Unlimited Leads</li>
+                    <li>Custom Integrations</li>
+                    <li>Dedicated Support</li>
+                </ul>
+                <button class="btn-primary" onclick="alert('Choose Enterprise plan')">Contact Sales</button>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 2rem; color: rgba(224, 230, 255, 0.8);">💚 <strong>Pay with Cash App:</strong> $edcmediadesigns</p>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <h2>Loved by Sales Teams</h2>
+        <div class="testimonial-cards">
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"VelocityAI increased our response rates by 237%. Our sales team is closing deals faster than ever."</p>
+                <p class="testimonial-author">Sarah Johnson - TechCorp Solutions</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"The Call Coach feature is a game-changer. Our win rate jumped 124% in just 3 months."</p>
+                <p class="testimonial-author">Michael Chen - Innovate.io</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Forecasting accuracy improved to 95%. We can finally predict pipeline with confidence."</p>
+                <p class="testimonial-author">Emily Rodriguez - Acme Corp</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 VelocityAI. All rights reserved. | Built for EDC Media Designs</p>
+    </footer>
+
+    <script>
+        function openVideo() {
+            const modal = document.getElementById('video-modal');
+            const video = document.getElementById('demo-video');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                video.play().catch(e => console.log('Autoplay prevented:', e));
+            }, 300);
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('video-modal');
+            const video = document.getElementById('demo-video');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            video.pause();
+            video.currentTime = 0;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeVideo();
+            }
+        });
+    </script>
+</body>
+</html>
