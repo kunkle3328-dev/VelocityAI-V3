@@ -1,0 +1,35 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rocketGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00ff88;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="30" fill="#0a0e27" stroke="url(#rocketGradient)" stroke-width="2"/>
+  
+  <!-- Rocket Body -->
+  <path d="M 32 12 L 24 40 L 32 36 L 40 40 Z" fill="url(#rocketGradient)"/>
+  
+  <!-- Rocket Window -->
+  <circle cx="32" cy="24" r="4" fill="#00ff88"/>
+  
+  <!-- Rocket Fins -->
+  <path d="M 24 38 L 20 48 L 26 42 Z" fill="#4169E1"/>
+  <path d="M 40 38 L 44 48 L 38 42 Z" fill="#4169E1"/>
+  
+  <!-- Rocket Flames -->
+  <path d="M 26 40 L 24 50 L 28 44 Z" fill="#ff4444"/>
+  <path d="M 38 40 L 40 50 L 36 44 Z" fill="#ff4444"/>
+  <path d="M 32 36 L 30 48 L 34 48 Z" fill="#ffa500"/>
+  
+  <!-- Speed Lines -->
+  <line x1="18" y1="20" x2="10" y2="20" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+  <line x1="18" y1="28" x2="8" y2="28" stroke="#00d4ff" stroke-width="2" opacity="0.5"/>
+  <line x1="46" y1="20" x2="54" y2="20" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+  <line x1="46" y1="28" x2="56" y2="28" stroke="#00d4ff" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Version indicator -->
+  <text x="32" y="58" font-size="8" fill="#00d4ff" text-anchor="middle" font-weight="bold">v3.0</text>
+</svg>
